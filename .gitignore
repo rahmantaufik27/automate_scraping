@@ -1,0 +1,8 @@
+.env
+/env
+**/.env
+/driver
+/shopee_url
+/jupyter
+**/__pycache__
+*.pyc
