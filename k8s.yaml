@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fd-scraping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: scraping
+  template:
+    metadata:
+      labels:
+        component: scraping
+    spec:
+      containers:
+        - name: fd-scraping
+          image: asia.gcr.io/food-id-app/food/fd-scraping:latest
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "500Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1000Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 15
+          ports:
+            - containerPort: 5000

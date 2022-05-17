@@ -1,0 +1,38 @@
+language: generic
+sudo: required
+branches:
+  only:
+    - main
+services:
+  - docker
+stages:
+  - name: deploy_master
+    if: branch = main
+env:
+  global:
+    - GIT_SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+    - PROJECT_ID="food-id-app"
+    - IMAGE_REPO="food"
+    - APP_NAME="fd-scraping"
+    - REGION="asia-southeast2"
+jobs:
+  include:
+    - stage: deploy_master
+      script:     
+        - openssl aes-256-cbc -K $encrypted_6330fb5ca1fb_key -iv $encrypted_6330fb5ca1fb_iv -in secret.json.enc -out secret.json -d
+        - openssl aes-256-cbc -K $encrypted_bb69b8dce69a_key -iv $encrypted_bb69b8dce69a_iv -in external_files/fd-bigquery-python.json.enc -out external_files/fd-bigquery-python.json -d
+        - openssl aes-256-cbc -K $encrypted_b0a4f8cbed0f_key -iv $encrypted_b0a4f8cbed0f_iv -in external_files/fd-storage-python.json.enc -out external_files/fd-storage-python.json -d
+        - curl https://sdk.cloud.google.com | bash > /dev/null;
+        - source $HOME/google-cloud-sdk/path.bash.inc
+        - gcloud components update kubectl
+        - gcloud auth activate-service-account --key-file secret.json
+        - gcloud config set project $PROJECT_ID
+        - gcloud auth configure-docker
+        - docker build -t asia.gcr.io/$PROJECT_ID/$IMAGE_REPO/$APP_NAME:latest
+          -t asia.gcr.io/$PROJECT_ID/$IMAGE_REPO/$APP_NAME:$GIT_SHA .
+        - docker push asia.gcr.io/$PROJECT_ID/$IMAGE_REPO/$APP_NAME:latest
+        - docker push asia.gcr.io/$PROJECT_ID/$IMAGE_REPO/$APP_NAME:$GIT_SHA
+        - gcloud container clusters get-credentials fd-prod-cluster --zone asia-southeast2-b --project $PROJECT_ID
+        - kubectl apply -f k8s.yaml
+        - kubectl set image deployments/$APP_NAME $APP_NAME=asia.gcr.io/$PROJECT_ID/$IMAGE_REPO/$APP_NAME:$GIT_SHA

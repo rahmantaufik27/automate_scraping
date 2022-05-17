@@ -1,0 +1,13 @@
+.env
+/env
+**/.env
+**/chromedriver
+**/fd-storage-python.json
+**/fd-bigquery-python.json
+/external_files
+/daily_url
+/jupyter
+**/__pycache__
+*.pyc
+/data
+secret.json.enc
