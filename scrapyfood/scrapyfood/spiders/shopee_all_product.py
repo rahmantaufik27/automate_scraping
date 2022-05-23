@@ -20,6 +20,7 @@ class ShopeeAllProductSpider(scrapy.Spider):
     def start_requests(self):
 
         # initiate the configuration
+        # adjust to your directory setting
         cs = service_account.Credentials.from_service_account_file("external_files/fd-storage-python.json")
         storage_client = storage.Client(self.client_name, credentials=cs)
         bucket = storage_client.get_bucket(self.bucket_name)
@@ -43,27 +44,6 @@ class ShopeeAllProductSpider(scrapy.Spider):
                 df_urls = df_urls_all[batch_number:batch_number_2]
             else:
                 df_urls = df_urls_all[990000:]
-
-            # if batch=="a":
-            #     df_urls = df_urls_all[0:100000]
-            # elif batch=="b":
-            #     df_urls = df_urls_all[100000:200000]
-            # elif batch=="c":
-            #     df_urls = df_urls_all[200000:300000]
-            # elif batch=="d":
-            #     df_urls = df_urls_all[300000:400000]
-            # elif batch=="e":
-            #     df_urls = df_urls_all[400000:500000]
-            # elif batch=="f":
-            #     df_urls = df_urls_all[500000:600000]
-            # elif batch=="g":
-            #     df_urls = df_urls_all[600000:700000]
-            # elif batch=="h":
-            #     df_urls = df_urls_all[700000:800000]
-            # elif batch=="i":
-            #     df_urls = df_urls_all[800000:900000]
-            # else:
-            #     df_urls = df_urls_all[900000:]
 
 
         urls = df_urls['url'].to_list()
@@ -131,28 +111,6 @@ if __name__ == "__main__":
     # handling for data duplicate or trailing data
     if os.path.exists(f"data/shopee/raw_all_products_{dt}.json"):
         os.remove(f"data/shopee/raw_all_products_{dt}.json")
-
-    # uri = f"data/shopee/raw_all_products_{dt}.json"
-    # if batch=="a":
-    #     uri = f"data/shopee/raw_all_products_1.json"
-    # elif batch=="b":
-    #     uri = f"data/shopee/raw_all_products_2.json"
-    # elif batch=="c":
-    #     uri = f"data/shopee/raw_all_products_3.json"
-    # elif batch=="d":
-    #     uri = f"data/shopee/raw_all_products_4.json"
-    # elif batch=="e":
-    #     uri = f"data/shopee/raw_all_products_5.json"
-    # elif batch=="f":
-    #     uri = f"data/shopee/raw_all_products_6.json"
-    # elif batch=="g":
-    #     uri = f"data/shopee/raw_all_products_7.json"
-    # elif batch=="h":
-    #     uri = f"data/shopee/raw_all_products_8.json"
-    # elif batch=="i":
-    #     uri = f"data/shopee/raw_all_products_9.json"
-    # else:
-    #     uri = f"data/shopee/raw_all_products_10.json"
     
     uri = f"data/shopee/raw_all_products_{batch}.json"
 

@@ -1,5 +1,5 @@
 # AUTOMATIC SCRAPING BY WEBSITE
-## FOOD.ID
+## FNB
 ### Scraping Data through URL Website
 
 <br />
@@ -8,9 +8,9 @@
 
 1. Scraping data online
     - The data that can be scrap are including products detail and images
-    - To scrap product detail, run scraping.food.id/(market_place)/(outlet_name) in your browser
+    - To scrap product detail, run (your_flask_ip_address)/(market_place)/(outlet_name) in your browser
     - wait the minutes, wait until the data will be download to your PC, the length of time depends on the amount of product that needs to be scraping
-    - After the product detail have been downloaded, scraping the product images by scraping.food.id/(market_place)_images/(outlet_name)
+    - After the product detail have been downloaded, scraping the product images by (your_flask_ip_address)/(market_place)_images/(outlet_name)
     - currently, only tokped and shopee that can be scraped
 
 <br />
@@ -71,10 +71,10 @@
 
 > Scraping Test Case
 
-1. Access scraping.food.id/(market_place)_test/(menu)/(outlet_name)
+1. Access (your_flask_ip_address)/(market_place)_test/(menu)/(outlet_name)
 2. There are several menu in test case including url, raw, product, image in both tokped and shopee test. While in shopee test there is all_product and all_seller menu
-3. For example, we want to test scraping product from outlet ajibofficial at shopee, so access scraping.food.id/shopee_test/product/ajibofficial
-4. In addition, there are scraping shopee daily test, access scraping.food.id/shopee_test/all_product/a or scraping.food.id/shopee_test/all_seller/a, then check the bigquery and storage for data test result 
+3. For example, we want to test scraping product from outlet ajibofficial at shopee, so access (your_flask_ip_address)/shopee_test/product/ajibofficial
+4. In addition, there are scraping shopee daily test, access (your_flask_ip_address)/shopee_test/all_product/a or (your_flask_ip_address)/shopee_test/all_seller/a, then check the bigquery and storage for data test result 
 
 <br />
 
@@ -82,16 +82,16 @@
 
 - There is function can be used for cleaning the directory
 - This function is intended to delete all raw files after scraping process, so storage will be lighter and program will be running smoothly
-- To access this function, scraping.food.id/cleaning_data
+- To access this function, (your_flask_ip_address)/cleaning_data
 
 <br />
 
 > Upload to GCP Storage Schema
 
-1. Access scraping.food.id/upload_to_storage/(menu)/(market_place)/(outlet_name)
+1. Access (your_flask_ip_address)/upload_to_storage/(menu)/(market_place)/(outlet_name)
 2. There are several menu in upload schema including url, product, and image
-3. The market place in url should be filled in, so for example scraping.food.id/upload_to_storage/image/shopee/ajibofficial
-4. In addition, there is url that used storage schema too, which are scraping.food.id/shopee_all_product and scraping.food.id/shopee_all_seller, it used to scraping the daily shopee transaction
+3. The market place in url should be filled in, so for example (your_flask_ip_address)/upload_to_storage/image/shopee/ajibofficial
+4. In addition, there is url that used storage schema too, which are (your_flask_ip_address)/shopee_all_product and (your_flask_ip_address)/shopee_all_seller, it used to scraping the daily shopee transaction
 
 <br />
 
@@ -99,25 +99,6 @@
 
 1. You can check the external_data_sp dataset in bigquery and data_external_backup in storage for data test result
 2. You can check the directory of the docker also, with this below code
-```
-# first, access the cluster in terminal
-gcloud container clusters get-credentials fd-prod-cluster --zone asia-southeast2-b --project food-id-app
-# then, in to the pods
-kubectl exec -it fd-scraping-785cd6cb87-qc7gk bash
-In addition, you can checking the logs of scraping program processing in here
-```
-
-<br />
-
-> Stoping the process
-
-- You can stop the scraping process (for scraping.food.id) through this (choose actions -> scale), or open terminal and code this below
-```
-# first, access the cluster in terminal
-gcloud container clusters get-credentials fd-prod-cluster --zone asia-southeast2-b --project food-id-app
-# stop the scale by --replicas=0, then active it again by --replicas=1
-kubectl scale --replicas=0 deployment/fd-scraping 
-```
 
 <br />
 

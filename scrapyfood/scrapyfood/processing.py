@@ -15,26 +15,28 @@ from google.oauth2 import service_account
 class GeneralPreProcessing:
     def access_configuration():
         # if you want test in local without docker run, then local_test = "TRUE"
-        local_test = "FALSE"
+        local_test = "TRUE"
         return local_test
+
+    ## fill the storage, bigquery and access key setting with your own
 
     # gcp storage initiation
     def access_storage_configuration():
-        client_name = "FOOD-ID"
-        bucket_name = "data_external_backup"
+        client_name = "xxx"
+        bucket_name = "xxx"
         return client_name, bucket_name
 
     # gcp bigquery initiation
     def access_bq_configuration():
-        bq_project_id = "food-id-app"
-        bq_table_product = "external_data_sp.EXTERNAL_PRODUCTS"
-        bq_table_seller = "external_data_sp.EXTERNAL_SHOPS"
+        bq_project_id = "xxx"
+        bq_table_product = "xxx"
+        bq_table_seller = "xxx"
         return bq_project_id, bq_table_product, bq_table_seller
     
     # gcp access key initiation
     def access_credential_local():
-        credentials_storage = "external_files/fd-storage-python.json"
-        credentials_bq = "external_files/fd-bigquery-python.json"
+        credentials_storage = "xxx"
+        credentials_bq = "xxx"
         return credentials_storage, credentials_bq
 
 # post processing for tokped scraping
@@ -81,13 +83,6 @@ class TokpedPostProcessing:
         # return the length of data and the data itself
         len_data = len2            
         return len_data, df_csv
-        
-    # def delete_raw_data(self):
-    #     # delete the raw file
-    #     if os.path.exists(f"data/tokped/raw_products_{self}.json"):
-    #         os.remove(f"data/tokped/raw_products_{self}.json")
-    #     else:
-    #         print("cannot remove")
     
     def download_images(self):
         # delete the old images files first
@@ -105,7 +100,7 @@ class TokpedPostProcessing:
             # get the images url from csv raw
             df = pd.read_csv(f"data/tokped/products_{self}.csv")
             # filter to get only alphanumeric
-            df["name"] = df["name"].str.replace(r'[^a-zA-Z0-9 ]+', '')
+            df["name"] = df["name"].str.replace(r'[^a-zA-Z0-9 ]+', '', regex=True)
 
             # download files based on images url
             for u, n in zip(df["images_url"], df["name"]):
@@ -206,7 +201,7 @@ class ShopeePostProcessing:
             # get the images url from csv raw
             df = pd.read_csv(f"data/shopee/products_{self}.csv")
             # filter to get only alphanumeric
-            df["name"] = df["name"].str.replace(r'[^a-zA-Z0-9 ]+', '')
+            df["name"] = df["name"].str.replace(r'[^a-zA-Z0-9 ]+', '', regex=True)
 
             # download files based on images url
             for u, n in zip(df["images_url"], df["name"]):

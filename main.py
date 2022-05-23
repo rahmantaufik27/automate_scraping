@@ -31,9 +31,8 @@ def welcome():
     return """
         <br/><br/><br/><br/><br/>
         <center>
-        <h1>WELCOME TO SCRAPING APP BY FOOD.ID</h1> 
+        <h1>WELCOME TO FNB SCRAPING APP</h1> 
         <h3>This App is used for scraping food and beverage products in several marketplace </h3>
-        Contact data engineer if there is an error
         <br/><br/>Enjoy ;)
         </center>
     """
@@ -214,44 +213,24 @@ def shopee_images(outlet):
             Please contact data engineer for more information
         """
 
-# scraping all fnb product shopee
+# scraping all fnb product shopee for daily
 @app.route("/shopee_all_product")
 def shopee_all_product():
     
     # set the name_type as a all, and it will download all product url
     name_type = "all"
-    # process scraping data with the params configuration value
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "a"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "b"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "c"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "d"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "e"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "f"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "g"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "h"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "i"])
-    # process.wait()
-    # process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, "j"])
-    # process.wait()
 
+    # set the scraping per batch and download the files as batch
     for i in range(0, 99):
         j = str(i)
         process = subprocess.Popen(['python3', 'scrapyfood/scrapyfood/spiders/shopee_all_product.py', name_type, client_name, bucket_name, j])
         process.wait()
 
     # process for uploading to gcp storage and bigquery
-    # ShopeePostProcessing.upload_product_to_storage_bigquery(name_type)
+    ShopeePostProcessing.upload_product_to_storage_bigquery(name_type)
     # then, waiting and cleaning the data
-    # time.sleep(10)
-    # GeneralPostProcessing.delete_all_data()
+    time.sleep(10)
+    GeneralPostProcessing.delete_all_data()
     return "Done"
 
 # scraping all fnb seller shopee
@@ -278,6 +257,7 @@ def page_not_found(e):
 
 # try to upload from local to gcp storage
 ## for example /upload_to_storage/image/shopee/ajibofficial
+### change this with your storage directory setting
 @app.route("/upload_to_storage/<menu>/<mp>/<outlet>")
 def upload_to_gcp_storage(menu=None, mp=None, outlet=None):
 

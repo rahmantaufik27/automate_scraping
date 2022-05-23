@@ -86,11 +86,11 @@ class TokpedScraping:
                 try:
                     time.sleep(3)
                     # make sure the path is always right to capture the product url
-                    product = driver.find_elements_by_xpath('.//div[@class="css-qa82pd"]//div[@class="css-1c4umxf"]//div[@class="pcv3__container css-gfx8z3"]//div[@class="css-zimbi"]//a[@href]')
+                    product = driver.find_elements_by_xpath('.//div[@class="css-qa82pd"]//div[@class="css-1c4umxf"]//div[@class="pcv3__container css-gfx8z3"]//div[@class="css-974ipl"]//a[@href]')
                     total_product = total_product + len(product)
                     print(len(product))
                     for k in range(0, len(product)):
-                        linklist = driver.find_elements_by_xpath('.//div[@class="css-qa82pd"]//div[@class="css-1c4umxf"]//div[@class="pcv3__container css-gfx8z3"]//div[@class="css-zimbi"]//a[@href]')
+                        linklist = driver.find_elements_by_xpath('.//div[@class="css-qa82pd"]//div[@class="css-1c4umxf"]//div[@class="pcv3__container css-gfx8z3"]//div[@class="css-974ipl"]//a[@href]')
                         url_product = linklist[k].get_attribute('href')
                         # print(url_w)
                         # store the data to dictionary and csv
